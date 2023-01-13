@@ -7,18 +7,18 @@
 
 <script>
 import { ref } from "vue";
-import { useTaskStore } from "../stores/TaskStore";
+import taskStore from "../stores/SharedStorage.js";
 
 export default {
   setup() {
-    const taskStore = useTaskStore();
     const newTask = ref("");
     const handleSubmit = () => {
       if (newTask.value.length != "") {
-        taskStore.addTask({
+        taskStore.actions.addTask({
           title: newTask.value,
           isFav: false,
-          id: taskStore.tasks[taskStore.tasks.length - 1].id + 1,
+          id:
+            taskStore.state().tasks[taskStore.state().tasks.length - 1].id + 1,
         });
         newTask.value = "";
       }

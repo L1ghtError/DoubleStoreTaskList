@@ -12,7 +12,7 @@ const sharedTaskStore = {
       return piniaTaskStore; //.$state
     }
     if (window.stateManager == "Vuex") {
-      return vuexTaskStore; //._state.data
+      return vuexTaskStore.state; //
     }
   },
   getters: {

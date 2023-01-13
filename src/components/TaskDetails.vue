@@ -2,20 +2,20 @@
   <div class="task">
     <h3>{{ task.title }}</h3>
     <div class="icons">
-      <i class="material-icons" @click="taskStore.deleteTask(task.id)"
+      <i class="material-icons" @click="taskStore.actions.deleteTask(task.id)"
         >delete</i
       >
       <i
         class="material-icons"
         :class="{ active: task.isFav }"
-        @click="taskStore.toggleFav(task.id)"
+        @click="taskStore.actions.toggleFav(task.id)"
         >favorite</i
       >
     </div>
   </div>
 </template>
 <script>
-import { useTaskStore } from "../stores/TaskStore";
+import taskStore from "../stores/SharedStorage.js";
 
 export default {
   props: {
@@ -27,7 +27,6 @@ export default {
     },
   },
   setup() {
-    const taskStore = useTaskStore();
     return { taskStore };
   },
 };
