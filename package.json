@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "pinia": "^2.0.27",
-    "vue": "^3.2.45"
+    "vue": "^3.2.45",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",

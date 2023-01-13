@@ -3,12 +3,22 @@
     <!--heading-->
     <header>
       <img src="./assets/logo.svg" alt="pinia" />
-      <h1>Pinia tasks</h1>
+      <h1>{{ stateManager }} tasks</h1>
+      <button
+        style="margin-left: 10px; margin-top: 20px"
+        @click="toggleStateManager"
+      >
+        Toggle state manager
+      </button>
+      <button
+        style="margin-left: 10px; margin-top: 20px"
+        @click="someFunctionality"
+      >
+        Some Functionality
+      </button>
     </header>
     <!--new task form-->
-    <div class="new-task-form">
-      <TaskForm></TaskForm>
-    </div>
+    <TaskForm></TaskForm>
     <!--filter-->
     <nav class="filter">
       <button @click="filter = 'all'">All tasks</button>
@@ -30,28 +40,68 @@
         <taskDetails :task="task" />
       </div>
     </div>
+    <!--<div v-for="task in vuexTaskStore.state.tasks" :key="task.id">
+      {{ task.title }} - {{ task.isFav }}
+    </div>-->
     <!-- <button class="reset" @click="taskStore.$reset">RESET</button> -->
   </main>
 </template>
 
 <script>
-import { storeToRefs } from "pinia";
 import { ref } from "vue";
-import { useTaskStore } from "./stores/TaskStore";
+import taskStore from "./stores/SharedStorage.js";
 import taskDetails from "./components/TaskDetails.vue";
 import TaskForm from "./components/TaskForm.vue";
+
 export default {
   components: {
-    taskDetails,
     TaskForm,
+    taskDetails,
   },
   setup() {
-    const taskStore = useTaskStore();
-    const { tasks, isLoading, favs, totalCount, favCount } =
-      storeToRefs(taskStore);
+    taskStore.init();
+    taskStore.actions.getTasks();
     const filter = ref("all");
-    taskStore.getTasks();
-    return { taskStore, filter, tasks, isLoading, favs, totalCount, favCount };
+    return {
+      taskStore,
+      filter,
+    };
+  },
+  data() {
+    return { stateManager: "Pinia" };
+  },
+  watch: {
+    stateManager: {
+      handler(newStateManager) {
+        window.stateManager = newStateManager;
+      },
+      immediate: true,
+    },
+  },
+  mounted() {
+    //const { tasks, isLoading, favs, totalCount, favCount }
+    const tasks = taskStore.state().tasks;
+    const isLoading = taskStore.state().isLoading;
+    console.log(isLoading);
+    const favs = taskStore.getters.favs();
+    const totalCount = taskStore.getters.totalCount();
+    const favCount = taskStore.getters.favCount();
+    return {
+      taskStore,
+      tasks,
+      isLoading,
+      favs,
+      totalCount,
+      favCount,
+    };
+  },
+  methods: {
+    toggleStateManager() {
+      this.stateManager = this.stateManager === "Pinia" ? "Vuex" : "Pinia";
+    },
+    someFunctionality() {
+      console.log(this.taskStores.state().tasks);
+    },
   },
 };
 </script>
