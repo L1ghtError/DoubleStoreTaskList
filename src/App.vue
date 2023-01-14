@@ -46,7 +46,10 @@
       </div>
     </div>
     <!--loading-->
-    <div v-if="taskStore.state().isLoading" class="loading">
+    <div
+      v-if="taskStore.state().isLoading || isPageUninitialised"
+      class="loading"
+    >
       loading tasks...
     </div>
     <!--<div v-for="task in vuexTaskStore.state.tasks" :key="task.id">
@@ -76,7 +79,7 @@ export default {
     };
   },
   data() {
-    return { stateManager: "Pinia" };
+    return { stateManager: "Pinia", isPageUninitialised: true };
   },
   watch: {
     stateManager: {
@@ -84,6 +87,7 @@ export default {
         window.stateManager = newStateManager;
         this.changeAppTheme();
         taskStore.actions.getTasks();
+        this.isPageUninitialised = true;
       },
       immediate: true,
     },
