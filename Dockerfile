@@ -1,9 +1,9 @@
 #STEP 1 "vue js"
-FROM node:alpine AS build
+FROM node:lts-buster-slim AS build
 WORKDIR /app
 COPY package.json ./
 RUN npm install
-RUN apk add curl
+#RUN apk --no-cache add curl
 COPY . .
 RUN npm run build 
 #STEP 2 "Nginx server"

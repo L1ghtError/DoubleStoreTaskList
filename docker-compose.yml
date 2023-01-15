@@ -2,7 +2,9 @@ version: "3"
 services:
   server:
     build: ./src/data
-    command: json-server db.json --port 3000;
+    command: json-server --watch db.json --host 0.0.0.0 --port 3000;
+    ports:
+      - "3000:3000"
   web:
     build: .
     command: ["nginx", "-g", "daemon off;"]

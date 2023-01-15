@@ -86,8 +86,9 @@ export default {
       handler(newStateManager) {
         window.stateManager = newStateManager;
         this.changeAppTheme();
+        window.someFunctionality = this.someFunctionality;
         taskStore.actions.getTasks();
-        this.isPageUninitialised = true;
+        this.isPageUninitialised = false;
       },
       immediate: true,
     },
@@ -97,17 +98,28 @@ export default {
       this.stateManager = this.stateManager === "Pinia" ? "Vuex" : "Pinia";
     },
     changeAppTheme() {
-      const stylesheet = document.styleSheets[2];
-      const boxParaRule = [...stylesheet.cssRules].find(
-        (r) => r.selectorText === ":root"
-      );
+      let boxParaRule;
+      for (let i = 1; i < document.styleSheets.length; i++) {
+        boxParaRule = [...document.styleSheets[i].cssRules].find((r) => {
+          return r.selectorText === ":root";
+        });
+      }
       const piniaTheme = `--main-color: #ffd859; --first-additional-color: #ffe9a0;`;
       const vuexTheme = `--main-color: #2da968; --first-additional-color: '#6bb290';`;
       boxParaRule.style =
         this.stateManager === "Pinia" ? piniaTheme : vuexTheme;
     },
     someFunctionality() {
-      console.log(taskStore.state());
+      let stylesheet;
+      let boxParaRule;
+      for (let i = 1; i < document.styleSheets.length; i++) {
+        boxParaRule = [...document.styleSheets[i].cssRules].find((r) => {
+          //boxParaRule = [...document.styleSheets[i].cssRules];
+          return r.selectorText === ":root";
+        });
+      }
+      console.log(boxParaRule);
+      console.log(stylesheet);
     },
   },
 };
